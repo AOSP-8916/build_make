@@ -134,25 +134,6 @@ class EdifyGenerator(object):
            '+ getprop("ro.build.thumbprint") + ".");').format(fp=fp, tp=tp)
     self.script.append(cmd)
 
-  def AssertOlderBuild(self, timestamp, timestamp_text):
-    """Assert that the build on the device is older (or the same as)
-    the given timestamp."""
-    self.script.append(
-        ('(!less_than_int(%s, getprop("ro.build.date.utc"))) || '
-         'abort("E%d: Can\'t install this package (%s) over newer '
-         'build (" + getprop("ro.build.date") + ").");') % (timestamp,
-             common.ErrorCode.OLDER_BUILD, timestamp_text))
-
-  def AssertDevice(self, device):
-    """Assert that the device identifier is the given string."""
-    cmd = ('assert(' +
-           ' || \0'.join(['getprop("ro.product.device") == "%s" || getprop("ro.build.product") == "%s"'
-                         % (i, i) for i in device.split(",")]) +
-           ' || abort("E%d: This package is for device: %s; ' +
-           'this device is " + getprop("ro.product.device") + ".");' +
-           ');') % (common.ErrorCode.DEVICE_MISMATCH, device)
-    self.script.append(self.WordWrap(cmd))
-
   def AssertSomeBootloader(self, *bootloaders):
     """Asert that the bootloader version is one of *bootloaders."""
     cmd = ("assert(" +
