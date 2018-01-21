@@ -960,3 +960,4 @@ include $(BUILD_SYSTEM)/soong_config.mk
 endif
 
 include $(BUILD_SYSTEM)/dumpvar.mk
+-include $(TOPDIR)build/core/qcom_target.mk
